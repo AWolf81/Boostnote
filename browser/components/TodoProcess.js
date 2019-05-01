@@ -11,9 +11,11 @@ const TodoProcess = ({
   todoStatus: {
     total: totalTodo,
     completed: completedTodo
-  }
+  },
+  toggleTodoViewMode,
+  todolistViewMode
 }) => (
-  <div styleName='todo-process' style={{display: totalTodo > 0 ? '' : 'none'}}>
+  <div styleName={`${todolistViewMode ? 'todo-process--active' : 'todo-process'}`} style={{display: totalTodo > 0 ? '' : 'none'}} onClick={toggleTodoViewMode}>
     <div styleName='todo-process-text'>
       <i className='fa fa-fw fa-check-square-o' />
       {completedTodo} of {totalTodo}
@@ -28,7 +30,9 @@ TodoProcess.propTypes = {
   todoStatus: {
     total: PropTypes.number.isRequired,
     completed: PropTypes.number.isRequired
-  }
+  },
+  todoViewMode: PropTypes.bool,
+  toggleTodoViewMode: PropTypes.func.isRequired
 }
 
 export default CSSModules(TodoProcess, styles)

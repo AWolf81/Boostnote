@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import CodeMirror from 'codemirror'
 import CSSModules from 'browser/lib/CSSModules'
 import styles from './Main.styl'
 import { connect } from 'react-redux'

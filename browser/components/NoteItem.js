@@ -3,7 +3,7 @@
  */
 import PropTypes from 'prop-types'
 import React from 'react'
-import { isArray } from 'lodash'
+import _, { isArray } from 'lodash'
 import invertColor from 'invert-color'
 import CSSModules from 'browser/lib/CSSModules'
 import { getTodoStatus } from 'browser/lib/getTodoStatus'
@@ -66,12 +66,14 @@ const NoteItem = ({
   handleNoteClick,
   handleNoteContextMenu,
   handleDragStart,
+  handleTodoViewModeToggle,
   pathname,
   storageName,
   folderName,
   viewType,
   showTagsAlphabetically,
-  coloredTags
+  coloredTags,
+  todolistViewMode
 }) => (
   <div
     styleName={isActive ? 'item--active' : 'item'}
@@ -128,7 +130,7 @@ const NoteItem = ({
             ? <i styleName='item-pin' className='fa fa-thumb-tack' />
             : ''}
           {note.type === 'MARKDOWN_NOTE'
-            ? <TodoProcess todoStatus={getTodoStatus(note.content)} />
+            ? <TodoProcess todoStatus={getTodoStatus(note.content)} todolistViewMode={todolistViewMode} toggleTodoViewMode={handleTodoViewModeToggle} />
             : ''}
         </div>
       </div>
@@ -156,7 +158,9 @@ NoteItem.propTypes = {
   handleNoteClick: PropTypes.func.isRequired,
   handleNoteContextMenu: PropTypes.func.isRequired,
   handleDragStart: PropTypes.func.isRequired,
-  handleDragEnd: PropTypes.func.isRequired
+  handleDragEnd: PropTypes.func.isRequired,
+  handleTodoViewModeToggle: PropTypes.func.isRequired,
+  todolistViewMode: PropTypes.bool
 }
 
 export default CSSModules(NoteItem, styles)

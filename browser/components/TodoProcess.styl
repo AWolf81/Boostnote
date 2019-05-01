@@ -2,7 +2,19 @@
   font-size 12px
   display flex
   padding-top 15px
+  padding 2px
   width 85%
+  &--active
+    border 2px solid rgba(35,159,134,0.6)
+  &:hover 
+    &:before
+      position absolute
+      content ""
+      display block
+      width 100%
+      height 100%
+      border-top 2px solid alpha(#6C7A89, 20%)
+      overflow visible
 
 .todo-process-text
   display inline-block
@@ -29,7 +41,6 @@
   border-radius 5px
   background-color #6C7A89
   transition 0.3s
-
 
 body[data-theme="dark"]
   .todo-process

@@ -366,8 +366,9 @@ class MarkdownNoteDetail extends React.Component {
   }
 
   renderEditor () {
-    const { config, ignorePreviewPointerEvents } = this.props
+    const { config, data, ignorePreviewPointerEvents } = this.props
     const { note } = this.state
+    const todolistViewMode = data.markdownPreview.get('todolistViewMode')
 
     if (this.state.editorType === 'EDITOR_PREVIEW') {
       return <MarkdownEditor
@@ -381,6 +382,7 @@ class MarkdownNoteDetail extends React.Component {
         onChange={this.handleUpdateContent.bind(this)}
         isLocked={this.state.isLocked}
         ignorePreviewPointerEvents={ignorePreviewPointerEvents}
+        todolistViewMode={todolistViewMode}
       />
     } else {
       return <MarkdownSplitEditor
@@ -392,6 +394,7 @@ class MarkdownNoteDetail extends React.Component {
         linesHighlighted={note.linesHighlighted}
         onChange={this.handleUpdateContent.bind(this)}
         ignorePreviewPointerEvents={ignorePreviewPointerEvents}
+        todolistViewMode={todolistViewMode}
       />
     }
   }

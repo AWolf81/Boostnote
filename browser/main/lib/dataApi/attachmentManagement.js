@@ -1,3 +1,5 @@
+/* global Image */
+const _ = require('lodash')
 const uniqueSlug = require('unique-slug')
 const fs = require('fs')
 const path = require('path')

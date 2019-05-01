@@ -12,7 +12,8 @@ function defaultDataMap () {
     storageNoteMap: new Map(),
     folderNoteMap: new Map(),
     tagNoteMap: new Map(),
-    trashedSet: new Set()
+    trashedSet: new Set(),
+    markdownPreview: new Map()
   }
 }
 
@@ -355,6 +356,12 @@ function data (state = defaultDataMap(), action) {
       state.storageMap = new Map(state.storageMap)
       action.storage.isOpen = action.isOpen
       state.storageMap.set(action.storage.key, action.storage)
+      return state
+
+    case 'TOGGLE_TODOLIST_PREVIEW_MODE':
+      state = Object.assign({}, state)
+      state.markdownPreview = new Map(state.markdownPreview)
+      state.markdownPreview.set('todolistViewMode', !(state.markdownPreview.get('todolistViewMode') || false))
       return state
   }
   return state

@@ -16,7 +16,7 @@ import convertModeName from 'browser/lib/convertModeName'
 import copy from 'copy-to-clipboard'
 import mdurl from 'mdurl'
 import exportNote from 'browser/main/lib/dataApi/exportNote'
-import { escapeHtmlCharacters } from 'browser/lib/utils'
+import { escapeHtmlCharacters, getPreviousHeading } from 'browser/lib/utils'
 import yaml from 'js-yaml'
 import context from 'browser/lib/context'
 import i18n from 'browser/lib/i18n'
@@ -226,6 +226,8 @@ export default class MarkdownPreview extends React.Component {
 
     this.linkClickHandler = this.handleLinkClick.bind(this)
     this.initMarkdown = this.initMarkdown.bind(this)
+    this.rewriteIframe = this.rewriteIframe.bind(this)
+
     this.initMarkdown()
   }
 
@@ -344,7 +346,7 @@ export default class MarkdownPreview extends React.Component {
       allowCustomCSS,
       customCSS
     )
-    let body = this.markdown.render(noteContent)
+    const body = this.markdown.render(noteContent)
     const files = [this.GetCodeThemeLink(codeBlockTheme), ...CSS_FILES]
     files.forEach(file => {
       if (global.process.platform === 'win32') {
@@ -582,7 +584,8 @@ export default class MarkdownPreview extends React.Component {
       prevProps.sanitize !== this.props.sanitize ||
       prevProps.smartArrows !== this.props.smartArrows ||
       prevProps.breaks !== this.props.breaks ||
-      prevProps.lineThroughCheckbox !== this.props.lineThroughCheckbox
+      prevProps.lineThroughCheckbox !== this.props.lineThroughCheckbox ||
+      prevProps.todolistViewMode !== this.props.todolistViewMode
     ) {
       this.initMarkdown()
       this.rewriteIframe()
@@ -681,6 +684,17 @@ export default class MarkdownPreview extends React.Component {
   }
 
   rewriteIframe () {
+    const {
+      theme,
+      indentSize,
+      showCopyNotification,
+      storagePath,
+      noteKey,
+      sanitize,
+      todolistViewMode
+    } = this.props
+    let { value, codeBlockTheme } = this.props
+
     _.forEach(
       this.refs.root.contentWindow.document.querySelectorAll(
         'input[type="checkbox"]'
@@ -696,16 +710,6 @@ export default class MarkdownPreview extends React.Component {
         el.removeEventListener('click', this.linkClickHandler)
       }
     )
-
-    const {
-      theme,
-      indentSize,
-      showCopyNotification,
-      storagePath,
-      noteKey,
-      sanitize
-    } = this.props
-    let { value, codeBlockTheme } = this.props
 
     this.refs.root.contentWindow.document.body.setAttribute('data-theme', theme)
     if (sanitize === 'NONE') {
@@ -897,6 +901,23 @@ export default class MarkdownPreview extends React.Component {
       const parentEl = img.parentElement
       this.setImgOnClickEventHelper(img, rect)
       imgObserver.observe(parentEl, config)
+    }
+
+    // Todolist view mode - only show heading with todolist if enabled
+    const lists = {}
+
+    if (todolistViewMode) {
+      _.forEach(this.refs.root.contentWindow.document.querySelectorAll('li.taskListItem'), el => {
+        const ul = el.closest('ul')
+        const heading = getPreviousHeading(ul) // recursively get heading before ul and skip other elements
+
+        lists[heading.innerText] = [ // Note: innerText works but problematic if not unique!!
+          heading,
+          ul
+        ]
+      })
+
+      this.refs.root.contentWindow.document.body.innerHTML = _.flatMap(lists, ([h, ul]) => ([h.outerHTML, ul.outerHTML])).join('')
     }
   }
 
@@ -1095,5 +1116,6 @@ MarkdownPreview.propTypes = {
   storagePath: PropTypes.string,
   smartQuotes: PropTypes.bool,
   smartArrows: PropTypes.bool,
-  breaks: PropTypes.bool
+  breaks: PropTypes.bool,
+  todolistViewMode: PropTypes.bool
 }

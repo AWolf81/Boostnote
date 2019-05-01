@@ -80,6 +80,7 @@ class NoteList extends React.Component {
     this.restoreNote = this.restoreNote.bind(this)
     this.copyNoteLink = this.copyNoteLink.bind(this)
     this.navigate = this.navigate.bind(this)
+    this.handleTodoViewModeToggle = this.handleTodoViewModeToggle.bind(this)
 
     // TODO: not Selected noteKeys but SelectedNote(for reusing)
     this.state = {
@@ -996,8 +997,13 @@ class NoteList extends React.Component {
     if (storage) return 'STORAGE'
   }
 
+  handleTodoViewModeToggle () {
+    const { dispatch } = this.props
+    dispatch({type: 'TOGGLE_TODOLIST_PREVIEW_MODE'})
+  }
+
   render () {
-    const { location, config, params: { folderKey } } = this.props
+    const { data, location, config, params: { folderKey } } = this.props
     let { notes } = this.props
     const { selectedNoteKeys } = this.state
     const sortBy = _.get(config, [folderKey, 'sortBy'], config.sortBy.default)
@@ -1068,6 +1074,8 @@ class NoteList extends React.Component {
               handleNoteContextMenu={this.handleNoteContextMenu.bind(this)}
               handleNoteClick={this.handleNoteClick.bind(this)}
               handleDragStart={this.handleDragStart.bind(this)}
+              todolistViewMode={data.markdownPreview.get('todolistViewMode')}
+              handleTodoViewModeToggle={this.handleTodoViewModeToggle.bind(this)}
               pathname={location.pathname}
               folderName={this.getNoteFolder(note).name}
               storageName={this.getNoteStorage(note).name}
@@ -1149,6 +1157,7 @@ NoteList.contextTypes = {
 }
 
 NoteList.propTypes = {
+  // data is passed to NoteList but not here?
   dispatch: PropTypes.func,
   repositories: PropTypes.array,
   style: PropTypes.shape({

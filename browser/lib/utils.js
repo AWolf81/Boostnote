@@ -136,9 +136,18 @@ export function isMarkdownTitleURL (str) {
   return /(^#{1,6}\s)(?:\w+:|^)\/\/(?:[^\s\.]+\.\S{2}|localhost[\:?\d]*)/.test(str)
 }
 
+export function getPreviousHeading (el) {
+  if (el) {
+    const prevEl = el.previousElementSibling
+    return prevEl.nodeName.toLowerCase().startsWith('h') ? prevEl : getPreviousHeading(prevEl)
+  }
+  return null
+}
+
 export default {
   lastFindInArray,
   escapeHtmlCharacters,
   isObjectEqual,
-  isMarkdownTitleURL
+  isMarkdownTitleURL,
+  getPreviousHeading
 }

@@ -266,7 +266,7 @@ class MarkdownEditor extends React.Component {
   }
 
   render () {
-    const {className, value, config, storageKey, noteKey, linesHighlighted} = this.props
+    const {className, value, config, storageKey, noteKey, linesHighlighted, todolistViewMode} = this.props
 
     let editorFontSize = parseInt(config.editor.fontSize, 10)
     if (!(editorFontSize > 0 && editorFontSize < 101)) editorFontSize = 14
@@ -353,6 +353,7 @@ class MarkdownEditor extends React.Component {
           allowCustomCSS={config.preview.allowCustomCSS}
           lineThroughCheckbox={config.preview.lineThroughCheckbox}
           onDrop={(e) => this.handleDropImage(e)}
+          todolistViewMode={todolistViewMode}
         />
       </div>
     )
@@ -363,7 +364,8 @@ MarkdownEditor.propTypes = {
   className: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  ignorePreviewPointerEvents: PropTypes.bool
+  ignorePreviewPointerEvents: PropTypes.bool,
+  todolistViewMode: PropTypes.bool
 }
 
 export default CSSModules(MarkdownEditor, styles)
