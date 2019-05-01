@@ -1,4 +1,6 @@
 import browserEnv from 'browser-env'
+import Enzyme from 'enzyme'
+import Adapter from 'enzyme-adapter-react-15'
 browserEnv(['window', 'document', 'navigator'])
 
 // for CodeMirror mockup
@@ -25,3 +27,6 @@ window.localStorage = {
     return '{}'
   }
 }
+
+// React 15 Enzyme adapter
+Enzyme.configure({ adapter: new Adapter() })
