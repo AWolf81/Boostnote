@@ -15,7 +15,10 @@ const TodoProcess = ({
   toggleTodoViewMode,
   todolistViewMode
 }) => (
-  <div styleName={`${todolistViewMode ? 'todo-process--active' : 'todo-process'}`} style={{display: totalTodo > 0 ? '' : 'none'}} onClick={toggleTodoViewMode}>
+  <div
+    title='Click to toggle todolist preview render mode'
+    styleName={`${todolistViewMode ? 'todo-process--active' : 'todo-process'}`}
+    style={{display: totalTodo > 0 ? '' : 'none'}} onClick={toggleTodoViewMode}>
     <div styleName='todo-process-text'>
       <i className='fa fa-fw fa-check-square-o' />
       {completedTodo} of {totalTodo}

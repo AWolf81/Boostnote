@@ -4,17 +4,17 @@
   padding-top 15px
   padding 2px
   width 85%
-  &--active
-    border 2px solid rgba(35,159,134,0.6)
-  &:hover 
-    &:before
-      position absolute
-      content ""
-      display block
-      width 100%
-      height 100%
-      border-top 2px solid alpha(#6C7A89, 20%)
-      overflow visible
+  border 2px solid transparent
+  &:hover
+    border 2px solid alpha(#6C7A89, 20%)
+
+.todo-process--active
+  font-size 12px
+  display flex
+  padding-top 15px
+  padding 2px
+  width 85%
+  border 2px solid rgba(35,159,134,0.6)
 
 .todo-process-text
   display inline-block
