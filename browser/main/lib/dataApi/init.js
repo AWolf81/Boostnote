@@ -2,6 +2,7 @@
 const _ = require('lodash')
 const resolveStorageData = require('./resolveStorageData')
 const resolveStorageNotes = require('./resolveStorageNotes')
+const watchDirectories = require('./watchDirectories')
 const consts = require('browser/lib/consts')
 const path = require('path')
 const fs = require('fs')
@@ -28,6 +29,8 @@ function init () {
       rawStorages = JSON.parse(window.localStorage.getItem('storages'))
       // Remove storages who's location is inaccesible.
       rawStorages = rawStorages.filter(storage => fs.existsSync(storage.path))
+      console.log('raw storages', rawStorages)
+      watchDirectories(rawStorages)
       if (!_.isArray(rawStorages)) throw new Error('Cached data is not valid.')
     } catch (e) {
       console.warn('Failed to parse cached data from localStorage', e)

@@ -17,6 +17,10 @@ var config = Object.assign({}, skeleton, {
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      {
+        test: /\.node$/,
+        loader: 'node-loader'
       }
     ]
   },
