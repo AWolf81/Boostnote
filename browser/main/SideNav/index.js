@@ -210,9 +210,16 @@ class SideNav extends React.Component {
   }
 
   handleColorPickerConfirm (color) {
-    const { dispatch, config: {coloredTags} } = this.props
-    const { colorPicker: { tagName } } = this.state
-    const newColoredTags = Object.assign({}, coloredTags, {[tagName]: color.hex})
+    const {
+      dispatch,
+      config: { coloredTags }
+    } = this.props
+    const {
+      colorPicker: { tagName }
+    } = this.state
+    const newColoredTags = Object.assign({}, coloredTags, {
+      [tagName]: color.hex
+    })
 
     const config = { coloredTags: newColoredTags }
     ConfigManager.set(config)

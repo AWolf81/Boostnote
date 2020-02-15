@@ -212,43 +212,43 @@ class TagSelect extends React.Component {
 
     const tagList = _.isArray(value)
       ? (showTagsAlphabetically ? _.sortBy(value) : value).map(tag => {
-        const wrapperStyle = {}
-        const textStyle = {}
-        const BLACK = '#333333'
-        const WHITE = '#f1f1f1'
-        const color = coloredTags[tag]
-        const invertedColor =
+          const wrapperStyle = {}
+          const textStyle = {}
+          const BLACK = '#333333'
+          const WHITE = '#f1f1f1'
+          const color = coloredTags[tag]
+          const invertedColor =
             color && invertColor(color, { black: BLACK, white: WHITE })
-        let iconRemove = '../resources/icon/icon-x.svg'
-        if (color) {
-          wrapperStyle.backgroundColor = color
-          textStyle.color = invertedColor
-        }
-        if (invertedColor === WHITE) {
-          iconRemove = '../resources/icon/icon-x-light.svg'
-        }
-        return (
-          <span styleName='tag' key={tag} style={wrapperStyle}>
-            <span
-              styleName='tag-label'
-              style={textStyle}
-              onClick={e => this.handleTagLabelClick(tag)}
+          let iconRemove = '../resources/icon/icon-x.svg'
+          if (color) {
+            wrapperStyle.backgroundColor = color
+            textStyle.color = invertedColor
+          }
+          if (invertedColor === WHITE) {
+            iconRemove = '../resources/icon/icon-x-light.svg'
+          }
+          return (
+            <span styleName='tag' key={tag} style={wrapperStyle}>
+              <span
+                styleName='tag-label'
+                style={textStyle}
+                onClick={e => this.handleTagLabelClick(tag)}
               >
                 #{tag}
-            </span>
-            <button
-              styleName='tag-removeButton'
-              onClick={e => this.handleTagRemoveButtonClick(tag)}
+              </span>
+              <button
+                styleName='tag-removeButton'
+                onClick={e => this.handleTagRemoveButtonClick(tag)}
               >
-              <img
-                className='tag-removeButton-icon'
-                src={iconRemove}
-                width='8px'
+                <img
+                  className='tag-removeButton-icon'
+                  src={iconRemove}
+                  width='8px'
                 />
-            </button>
-          </span>
-        )
-      })
+              </button>
+            </span>
+          )
+        })
       : []
 
     const { newTag, suggestions } = this.state
