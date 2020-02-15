@@ -1,9 +1,12 @@
-(function (mod) {
-  if (typeof exports === 'object' && typeof module === 'object') { // Common JS
+;(function (mod) {
+  if (typeof exports === 'object' && typeof module === 'object') {
+    // Common JS
     mod(require('../codemirror/lib/codemirror'))
-  } else if (typeof define === 'function' && define.amd) { // AMD
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
     define(['../codemirror/lib/codemirror'], mod)
-  } else { // Plain browser env
+  } else {
+    // Plain browser env
     mod(CodeMirror)
   }
 })(function (CodeMirror) {
@@ -16,7 +19,7 @@
   const modifier = macOS ? 'metaKey' : 'ctrlKey'
 
   class HyperLink {
-    constructor(cm) {
+    constructor (cm) {
       this.cm = cm
       this.lineDiv = cm.display.lineDiv
 
@@ -28,11 +31,16 @@
       this.tooltip = document.createElement('div')
       this.tooltipContent = document.createElement('div')
       this.tooltipIndicator = document.createElement('div')
-      this.tooltip.setAttribute('class', 'CodeMirror-hover CodeMirror-matchingbracket CodeMirror-selected')
+      this.tooltip.setAttribute(
+        'class',
+        'CodeMirror-hover CodeMirror-matchingbracket CodeMirror-selected'
+      )
       this.tooltip.setAttribute('cm-ignore-events', 'true')
       this.tooltip.appendChild(this.tooltipContent)
       this.tooltip.appendChild(this.tooltipIndicator)
-      this.tooltipContent.textContent = `${macOS ? 'Cmd(⌘)' : 'Ctrl(^)'} + click to follow link`
+      this.tooltipContent.textContent = `${
+        macOS ? 'Cmd(⌘)' : 'Ctrl(^)'
+      } + click to follow link`
 
       this.lineDiv.addEventListener('mousedown', this.onMouseDown)
       this.lineDiv.addEventListener('mouseenter', this.onMouseEnter, {
@@ -47,7 +55,7 @@
         passive: true
       })
     }
-    getUrl(el) {
+    getUrl (el) {
       const className = el.className.split(' ')
 
       if (className.indexOf('cm-url') !== -1) {
@@ -60,7 +68,7 @@
 
       return null
     }
-    onMouseDown(e) {
+    onMouseDown (e) {
       const { target } = e
       if (!e[modifier]) {
         return
@@ -73,58 +81,61 @@
         shell.openExternal(url)
       }
     }
-    onMouseEnter(e) {
+    onMouseEnter (e) {
       const { target } = e
 
       const url = this.getUrl(target)
       if (url) {
         if (e[modifier]) {
-          target.classList.add('CodeMirror-activeline-background', 'CodeMirror-hyperlink')
-        }
-        else {
+          target.classList.add(
+            'CodeMirror-activeline-background',
+            'CodeMirror-hyperlink'
+          )
+        } else {
           target.classList.add('CodeMirror-activeline-background')
         }
 
         this.showInfo(target)
       }
     }
-    onMouseLeave(e) {
+    onMouseLeave (e) {
       if (this.tooltip.parentElement === this.lineDiv) {
-        e.target.classList.remove('CodeMirror-activeline-background', 'CodeMirror-hyperlink')
+        e.target.classList.remove(
+          'CodeMirror-activeline-background',
+          'CodeMirror-hyperlink'
+        )
 
         this.lineDiv.removeChild(this.tooltip)
       }
     }
-    onMouseMove(e) {
+    onMouseMove (e) {
       if (this.tooltip.parentElement === this.lineDiv) {
         if (e[modifier]) {
           e.target.classList.add('CodeMirror-hyperlink')
-        }
-        else {
+        } else {
           e.target.classList.remove('CodeMirror-hyperlink')
         }
       }
     }
-    showInfo(relatedTo) {
+    showInfo (relatedTo) {
       const b1 = relatedTo.getBoundingClientRect()
       const b2 = this.lineDiv.getBoundingClientRect()
       const tdiv = this.tooltip
 
-      tdiv.style.left = (b1.left - b2.left) + 'px'
+      tdiv.style.left = b1.left - b2.left + 'px'
       this.lineDiv.appendChild(tdiv)
 
       const b3 = tdiv.getBoundingClientRect()
       const top = b1.top - b2.top - b3.height - yOffset
       if (top < 0) {
-        tdiv.style.top = (b1.top - b2.top + b1.height + yOffset) + 'px'
-      }
-      else {
+        tdiv.style.top = b1.top - b2.top + b1.height + yOffset + 'px'
+      } else {
         tdiv.style.top = top + 'px'
       }
     }
   }
 
-  CodeMirror.defineOption('hyperlink', true, (cm) => {
+  CodeMirror.defineOption('hyperlink', true, cm => {
     const addon = new HyperLink(cm)
   })
 })
